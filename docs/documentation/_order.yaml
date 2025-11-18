@@ -219,7 +219,8 @@
 - upgrade-xray-with-fips
 - upgrading-to-rabbitmq-4-in-bundled-rabbitmq-xray-rpm-deb-linux-archive
 - upgrading-to-rabbitmq-4-in-bundled-rabbitmq-xray-docker
-- migrating-to-quorum-queue-or-quorum-queue-enablement-for-xray-in-native-installer
+- >-
+  migrating-to-quorum-queue-or-quorum-queue-enablement-for-xray-in-native-installer
 - upgrading-jfrog-catalog
 - upgrading-distribution
 - upgrading-from-distribution-version-2-x-to-2-x
@@ -262,7 +263,8 @@
 - use-an-external-database-with-artifactory-helm-installation
 - bootstraps-artifactory
 - monitoring-and-logging-in-artifactory-helm-installation
-- install-artifactory-and-artifactory-ha-with-nginx-and-terminate-ssl-in-nginx-service-load-balancer
+- >-
+  install-artifactory-and-artifactory-ha-with-nginx-and-terminate-ssl-in-nginx-service-load-balancer
 - configure-readonlyrootfilesystem-in-artifactory-containers
 - add-memory-target-trigger-to-artifactory-charts-using-hpa
 - advanced-options-for-xray
@@ -436,7 +438,8 @@
 - step-1-enable-tls-in-the-jfrog-platform
 - step-2-set-the-tls-certificate
 - prerequisites-for-custom-tls-certificate
-- option-1-use-access-as-a-root-ca-with-an-access-generated-self-signed-certificate
+- >-
+  option-1-use-access-as-a-root-ca-with-an-access-generated-self-signed-certificate
 - option-2-provide-your-own-signed-certificate
 - option-3-provide-a-custom-ca-certificate-to-access
 - regenerate-a-new-access-ca-certificate
@@ -532,4 +535,3 @@
 - pipelines-system-yaml
 - supported-configurations-in-pipelines-system-yaml
 - establish-tls-and-add-certificates-for-pipelines-helm-installation
-
