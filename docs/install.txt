@@ -1,0 +1,536 @@
+JFrog Installation & Setup Documentation
+├── Installation & Configuration
+├── System Architecture
+│   ├── Checksum-Based Storage
+│   │   ├── Checksum-Based Storage Implementation
+│   │   └── SHA-256 Support
+│   │       ├── Migrate the Database to Include SHA-256
+│   │       │   ├── Configure the SHA-256 Migration Process
+│   │       │   └── Monitor the SHA-256 Migration Process
+│   ├── High Availability
+│   │   ├── Cloud-Native High Availability
+│   │   ├── HA Architecture
+│   │   │   ├── Load Balancer in HA
+│   │   │   ├── JFrog Application in HA
+│   │   │   └── Common Resources in HA
+│   │   └── Clustering Artifactory
+│   ├── JFrog Products Container Base Image
+│   ├── System Directories
+│   │   ├── JFrog Home
+│   │   ├── Application Directory
+│   │   ├── Data Directory
+│   │   └── Generic Directory Layout
+│   ├── JFrog Artifactory Product
+│   │   ├── Artifactory Federation Service (RTFS)
+│   │   ├── Evidence Service
+│   │   ├── JFConnect Microservice
+│   │   ├── Individual JVM for Access Service
+│   │   └── IPv6 Support
+│   ├── JFrog Xray Service
+│   ├── JFrog Distribution Service
+│   └── JFrog Router Service
+├── System Requirements
+│   ├── General System Requirements
+│   │   ├── Requirements Matrix
+│   │   ├── Network Requirements for JFrog Products
+│   │   │   └── Artifactory Network Ports
+│   │   ├── Preflight Check
+│   │   ├── Java Requirements for JFrog Products
+│   │   ├── Supported Browsers
+│   │   ├── Docker Requirements
+│   │   └── Helm Chart Requirements
+│   ├── Artifactory System Requirements and Platform Support
+│   │   ├── Artifactory Database Requirements
+│   │   │   ├── Artifactory PostgreSQL Support
+│   │   │   ├── Artifactory Oracle Support
+│   │   │   ├── Artifactory MySQL Support
+│   │   │   ├── Artifactory Microsoft SQL Server Support
+│   │   │   └── Artifactory MariaDB Support
+│   │   └── Artifactory Filestore
+│   ├── Xray System Requirements and Platform Support
+│   │   ├── Xray and RabbitMQ Nodes Recommendations
+│   │   ├── Xray Storage Recommendations
+│   │   ├── Xray File Handle Allocation Limit
+│   │   ├── Database and Third-Party Applications in Xray
+│   │   ├── RabbitMQ HA in Xray using Quorum Queues
+│   │   └── Xray Network Ports
+│   └── Distribution System Requirements and Platform Support
+│       ├── Database and Third-Party Applications in Distribution
+│       └── Distribution Network Ports
+├── Install
+│   ├── Installing the JFrog Platform
+│   │   ├── Install the JFrog Platform using Helm Chart
+│   │   │   ├── JFrog Platform Helm Chart Installation Steps
+│   │   │   ├── JFrog Platform Product Configuration
+│   │   │   └── Use an External PostgreSQL Database in the JFrog Platform Installation
+│   │   ├── Install the JFrog Platform Using Ansible
+│   │   │   ├── Set up Ansible and the JFrog Ansible Collection
+│   │   │   ├── System Requirements for Ansible Installation
+│   │   │   ├── JFrog Platform Ansible Installation Steps
+│   │   │   │   ├── Generate master and join keys for the Ansible Installation
+│   │   │   │   ├── Override the system.yaml file in Ansible installations
+│   │   │   │   └── Use Ansible Vault to encrypt vars
+│   │   │   ├── Use an External Database with the Ansible Installation
+│   │   │   ├── Create the PostgreSQL Database for the Ansible Installation
+│   │   │   ├── Configure Artifactory to use PostgreSQL in an Ansible Installation
+│   │   │   │   ├── Configure Artifactory to Use PostgreSQL Single Node in Ansible
+│   │   │   │   └── Configure Artifactory HA to Use PostgreSQL Database in HA in Ansible
+│   │   │   ├── Enable TLS Encryption in Ansible Installation
+│   │   │   ├── High Availability (HA) Ansible Installation
+│   │   │   ├── Build the Ansible Collection Archive
+│   │   │   ├── Set SSL Certificate and Key for Nginx for the Ansible Installation
+│   │   │   ├── Configure mTLS in Artifactory with NGINX
+│   │   │   └── Upgrading JFrog Platform for the Ansible Collection
+│   │   └── Install the JFrog Platform using the K3s installer
+│   │       ├── K3s Installer System Requirements
+│   │       ├── K3s Installation Steps
+│   │       └── Uninstall the JFrog Platform K3s Installation
+│   ├── Installing Artifactory
+│   │   ├── Helm Charts
+│   │   │   ├── Install Artifactory on Kubernetes using Helm
+│   │   │   └── Install Artifactory on OpenShift using Helm
+│   │   ├── Docker
+│   │   │   ├── Install Artifactory using Docker Compose
+│   │   │   │   ├── Using the config.sh Script
+│   │   │   │   ├── Manual Docker Compose Installation
+│   │   │   │   ├── Docker Compose with Docker Volumes
+│   │   │   │   └── Docker Compose Next Steps
+│   │   │   └── Install Artifactory using Docker
+│   │   ├── Linux Package
+│   │   │   ├── Install Artifactory on RPM
+│   │   │   ├── Install Artifactory on Debian
+│   │   │   └── Install Artifactory with Linux Archive
+│   │   └── Windows Archive
+│   │       └── Install Artifactory on Windows
+│   ├── Installing Xray
+│   │   ├── Install Xray with FIPS
+│   │   ├── Quorum Queue Enablement for Xray and Platform Helm Charts
+│   │   ├── Xray Single Node Installation
+│   │   ├── Xray HA Installation
+│   │   ├── Xray Single Node Helm Installation
+│   │   │   └── Enabling JFrog Catalog in Xray Helm Chart
+│   │   ├── Xray Single Node OpenShift Installation
+│   │   ├── Install Xray Single Node with Interactive Script
+│   │   ├── Xray Single Node Manual Docker Compose Installation
+│   │   ├── Xray Single Node Manual RPM Installation
+│   │   ├── Xray Single Node Manual Debian Installation
+│   │   ├── Install Xray Single Node with Linux Archive
+│   │   ├── Xray HA Helm Installation
+│   │   ├── Xray HA OpenShift Installation
+│   │   ├── Xray HA Docker Compose Installation
+│   │   ├── Xray HA Linux Archive / RPM/ Debian Installation
+│   │   ├── PostgreSQL for Xray
+│   │   │   ├── Set up an Xray PostgreSQL Database in Single Node
+│   │   │   ├── Set up an Xray PostgreSQL Database in High Availability
+│   │   │   ├── Enable PostgreSQL Connectivity for Xray from Remote Servers
+│   │   │   ├── Create the Xray PostgreSQL Database
+│   │   │   ├── Configure Xray to Use PostgreSQL Single Node
+│   │   │   ├── Configure Xray HA to Use PostgreSQL Database in HA
+│   │   │   └── Support for pg_trgm Module
+│   │   └── RabbitMQ (Split) for Xray
+│   │       ├── RabbitMQ New Installation Guide RPM/DEB
+│   │       ├── RabbitMQ (Split) Fresh Installation Guide Linux Archive
+│   │       ├── RabbitMQ (Split) Fresh Installation Guide Docker Compose
+│   │       └── RabbitMQ (Split) Upgrade Guide
+│   ├── Installing JFrog Advanced Security
+│   │   ├── JFrog Advanced Security Prerequisites
+│   │   ├── Install JFrog Advanced Security on your Self-Hosted Environment with Helm
+│   │   ├── Install JFrog Advanced Security on your Self-Hosted Environment without Helm
+│   │   │   ├── Prerequisites to Install JAS without Helm
+│   │   │   ├── JAS Interactive Script Installation
+│   │   │   └── JAS Manual Installation
+│   │   ├── JFrog Advanced Security Additional Configurations
+│   │   └── JFrog Advanced Security Readiness Checking
+│   ├── Installing Catalog
+│   │   ├── Installing JFrog Catalog with Interactive Script
+│   │   ├── Install JFrog Catalog with Helm and OpenShift
+│   │   └── PostgreSQL for JFrog Catalog
+│   ├── Installing JFrog Runtime Security
+│   ├── Installing Distribution
+│   │   ├── Distribution Single Node Helm Installation
+│   │   ├── Distribution Single Node Docker Compose Installation
+│   │   ├── Distribution Single Node Interactive Script Installation
+│   │   ├── Distribution Single Node RPM Installation
+│   │   ├── Distribution Single Node Debian Installation
+│   │   ├── Distribution Single Node Linux Archive Installation
+│   │   ├── Distribution HA Helm Installation
+│   │   ├── Distribution HA Docker Compose Installation
+│   │   └── Distribution HA Linux Archive/RPM/Debian Installation
+│   ├── Installing Workers
+│   │   ├── Install JFrog Worker with Platform Helm Chart
+│   │   ├── Install JFrog Worker with Artifactory Helm Chart
+│   │   │   ├── Enabling Worker Configuration in Artifactory
+│   │   │   └── Steps to Install Worker Chart
+│   │   └── Install JFrog Worker with Docker Compose
+│   ├── Activate AI ML
+│   ├── Installing Mission Control
+│   ├── Installing Artifactory Federation Service
+│   ├── Install Bridge Client Service
+│   │   ├── Bridge Client Helm Chart Installation
+│   │   ├── Bridge Client Docker Compose Installation
+│   │   └── Bridge Client Linux Archive Installation
+│   ├── Installing Artifactory Edge
+│   │   └── Add an Edge Node
+│   ├── Verifying Signatures of JFrog Binaries
+│   ├── Allowlisted URLs and Air-Gapped Environment Considerations
+│   ├── Configure JFrog Platform in an Air-gapped Environment
+│   └── Uninstalling JFrog Products
+│       ├── Uninstalling JFrog Artifactory
+│       ├── Uninstalling JFrog Xray
+│       └── Uninstalling JFrog Distribution
+├── Upgrade
+│   ├── Upgrading Artifactory
+│   │   ├── Upgrade Helm Charts
+│   │   │   ├── Upgrade Artifactory using Helm with Bundled PostgreSQL
+│   │   │   └── Upgrade Artifactory using Helm with External Database
+│   │   ├── Upgrade Docker
+│   │   │   ├── Upgrade Artifactory using Docker Compose
+│   │   │   └── Upgrade Artifactory using Docker
+│   │   ├── Upgrade Linux Package
+│   │   │   ├── Upgrade Artifactory RPM Package
+│   │   │   ├── Upgrade Artifactory Debian Package
+│   │   │   └── Upgrade Artifactory with Linux Archive
+│   │   ├── Upgrade Windows Archive
+│   │   │   └── Upgrade Artifactory on Windows
+│   │   └── Upgrading from Artifactory Version 6.10.x Onwards to 7.x
+│   │       ├── Artifactory version 6.x to 7.x upgrade with Helm
+│   │       ├── Artifactory version 6.x to 7.x upgrade with Docker Compose
+│   │       ├── Artifactory version 6.x to 7.x upgrade with Docker
+│   │       ├── Artifactory version 6.x to 7.x upgrade with RPM
+│   │       ├── Artifactory version 6.x to 7.x upgrade with Debian
+│   │       ├── Artifactory version 6.x to 7.x Linux Archive Upgrade
+│   │       ├── Artifactory version 6.x to 7.x upgrade in Windows
+│   │       ├── Metadata Migration in the JFrog Platform
+│   │       └── Upgrading from Artifactory Version Below 6.10
+│   ├── Upgrading Xray
+│   │   ├── Upgrading from Xray Version 3.x to 3.x
+│   │   │   ├── Xray Single Node Interactive Script Upgrade (Recommended)
+│   │   │   ├── Xray Single Node Linux Archive Upgrade
+│   │   │   ├── Xray Single Node Manual RPM/Debian Upgrade
+│   │   │   ├── Xray Single Node Manual Docker Compose Upgrade
+│   │   │   ├── Xray Helm Upgrade
+│   │   │   └── Xray HA Upgrade
+│   │   ├── Upgrading from Xray Version 2.7 to 3.x
+│   │   │   ├── Upgrading from Xray Version Below 2.7
+│   │   │   ├── Xray and Artifactory One-to-One Pairing
+│   │   │   │   ├── Option 1: Pairing without configuration data (recommended)
+│   │   │   │   └── Option 2: Pairing with configuration data
+│   │   │   └── JFrog Xray PostgreSQL Upgrade-PostgreSQL 9.x EoS
+│   │   ├── Upgrade Xray with FIPS
+│   │   ├── Upgrading to RabbitMQ 4 in bundled RabbitMQ-Xray [RPM/DEB/Linux Archive]
+│   │   ├── Upgrading to RabbitMQ 4 in bundled RabbitMQ-Xray[Docker]
+│   │   └── Migrating to Quorum Queue or Quorum Queue Enablement for Xray in Native installer
+│   ├── Upgrading JFrog Catalog
+│   ├── Upgrading Distribution
+│   │   ├── Upgrading from Distribution Version 2.x to 2.x
+│   │   └── Upgrading from Distribution Version 1.6 to 2.x
+│   │       ├── Upgrading from Distribution Version Below 1.6
+│   │       └── Distribution and Artifactory One to One Pairing
+│   └── Upgrading Mission Control
+├── Helm Charts for Advanced Users
+│   ├── All Products - Customization
+│   │   ├── Auto-generated Passwords (Internal PostgreSQL)
+│   │   ├── Add Custom Volumes in Helm Installation
+│   │   ├── Add Custom Sidecars Containers in Helm Installations
+│   │   ├── Add Custom Init Containers in Helm Installation
+│   │   ├── Use Custom Secrets in Helm Installation
+│   │   ├── Override the Default System YAML File in Helm Installation
+│   │   ├── Establish TLS in Artifactory and JFrog Platform
+│   │   │   ├── Enable TLS in Artifactory
+│   │   │   ├── Enable TLS for other Products in JFrog Platform
+│   │   │   ├── Nginx with TLS
+│   │   │   ├── Example of Full JFrog Platform Chart
+│   │   │   └── Add Custom Certificates to JFrog Platform
+│   │   ├── Add Circle of Trust Certificates
+│   │   └── Use Unified Secret in Helm Installation
+│   ├── Artifactory High Availability
+│   │   ├── Artifactory Storage
+│   │   ├── Add Licenses with Artifactory HA Helm Installation
+│   │   ├── Scale the Artifactory HA Helm Installation Cluster
+│   │   ├── Use an Existing Shared Volume Claim with Artifactory HA Helm Installation
+│   │   └── Use an Existing Volume Claim for Artifactory HA Helm Installation
+│   ├── Artifactory Advanced Options
+│   │   ├── Add Licenses Using Secrets
+│   │   ├── Security-related Issues
+│   │   ├── Run Ingress Behind Another Load Balancer
+│   │   ├── Log Analytics
+│   │   ├── Advanced Storage Options
+│   │   │   └── Custom binarystore.xml
+│   │   ├── Add Extensions
+│   │   ├── Infrastructure Customization
+│   │   ├── Use ConfigMaps to Store Non-confidential Data
+│   │   ├── Use an External Database with Artifactory Helm Installation
+│   │   ├── Bootstraps Artifactory
+│   │   ├── Monitoring and Logging in Artifactory Helm Installation
+│   │   ├── Install Artifactory and Artifactory HA with Nginx and Terminate SSL in Nginx Service (Load Balancer)
+│   │   ├── Configure readOnlyRootFilesystem in Artifactory Containers
+│   │   └── Add Memory Target Trigger to Artifactory Charts using HPA
+│   ├── Advanced Options for Xray
+│   │   ├── Enable TLS in RabbitMQ in Xray Helm Chart
+│   │   ├── Enable TLS in RabbitMQ for Xray in JFrog Platform Chart
+│   │   └── Disable TLS in RabbitMQ for Xray in JFrog Platform Chart
+│   ├── Distribution Custom Volumes
+│   └── Uninstall and Deletion of Helm Installations
+│       ├── Uninstall Artifactory Helm Installation
+│       ├── Delete Artifactory Helm Installation
+│       └── Delete Xray Helm Installation
+├── Database Configuration
+│   ├── Choose the right database
+│   ├── Database Connection Settings
+│   ├── Database setup workflow
+│   ├── Database tuning for heavy loads in Artifactory
+│   ├── PostgreSQL for Artifactory
+│   │   ├── Create the Artifactory PostgreSQL Database
+│   │   ├── Enable PostgreSQL Connectivity from Remote Servers
+│   │   ├── Configure Artifactory to Use PostgreSQL
+│   │   ├── Configure Artifactory to Use PostgreSQL Single Node
+│   │   ├── Configure Artifactory HA to Use PostgreSQL Database in HA
+│   │   ├── Configure Artifactory to Use Advisory Locks in PostgreSQL
+│   │   └── Enable TLS Encryption for PostgreSQL
+│   ├── Oracle for Artifactory
+│   │   ├── Create the Artifactory Oracle Database
+│   │   └── Configure Artifactory to use Oracle
+│   ├── MySQL for Artifactory
+│   │   ├── Create the Artifactory MySQL Database
+│   │   ├── Configure Artifactory to use MySQL
+│   │   ├── Increase MySQL Default Packet Size
+│   │   └── Tune MySQL for Artifactory
+│   ├── Microsoft SQL Server for Artifactory
+│   │   ├── Create the Artifactory Microsoft SQL Server Database
+│   │   └── Configure Artifactory to use Microsoft SQL Server
+│   └── MariaDB for Artifactory
+│       ├── Create the Artifactory MariaDB Database
+│       ├── Configure Artifactory to use MariaDB
+│       ├── Increase MariaDB Default Packet Size
+│       ├── Tune MariaDB for Artifactory
+│       └── Known Issues with MariaDB
+├── Filestore Configuration
+│   ├── Filestore Configuration
+│   ├── File System Binary Provider
+│   │   └── file-system binary provider template configuration
+│   ├── Cached Filesystem Binary Provider
+│   ├── Full-DB and Full-DB-Direct Binary Providers
+│   ├── Filestore Sharding
+│   │   ├── Configure a Sharding Binary Provider
+│   │   │   ├── Basic Sharding Configuration
+│   │   │   └── Cross-Zone Sharding Configuration
+│   │   ├── Double Shards Binary Provider
+│   │   ├── Redundant Shards Binary Provider
+│   │   ├── State-Aware Binary Provider
+│   │   ├── Configure Sharding for HA Cluster
+│   │   │   ├── Cluster-File-System Binary Provider
+│   │   │   └── Cluster-File-System Example
+│   │   ├── Sharding-Cluster Binary Provider
+│   │   ├── Using Balancing to Recover from Mount Failure
+│   │   └── Restoring Balance in Unbalanced Redundant Storage Units
+│   ├── AWS S3 Object Storage
+│   │   ├── Configure Artifactory to Use S3 Storage
+│   │   ├── Amazon S3 Template Parameters
+│   │   ├── S3 Binary Storage Templates
+│   │   │   ├── S3 Direct Upload Template (Recommended)
+│   │   │   ├── S3 Eventual Upload Template
+│   │   │   ├── S3 Cluster Binary Provider
+│   │   │   └── S3 Sharding
+│   │   ├── Migrate Your Filestore to S3
+│   │   │   ├── Manual Filestore Migration (Recommended)
+│   │   │   └── Automatic Filestore Migration
+│   │   ├── Using the S3 Intelligent Tiering Storage Class
+│   │   │   ├── The Benefits of Using Intelligent Tiering with Artifactory
+│   │   │   ├── Performance of S3 Intelligent Tiering Storage
+│   │   │   ├── Caveats in the S3 Intelligent Tiering Storage Class
+│   │   │   ├── Implementing the S3 Intelligent Tiering Storage Class
+│   │   │   │   ├── Establish Criteria for Migrating Objects
+│   │   │   │   ├── Create a Lifecycle Rule to Migrate Objects
+│   │   │   │   ├── Running Inventory Jobs
+│   │   │   │   └── Perform a Rollback
+│   │   │   └── Warning about Custom Configurations
+│   │   └── Integrate Artifactory with AWS SDK v2 for S3 Storage
+│   ├── Google Cloud Storage
+│   │   ├── Set up Artifactory to use GCS
+│   │   ├── Google Storage Binary Provider Native Client Template
+│   │   │   ├── Google Cloud Storage Authentication Mechanism
+│   │   │   ├── google-storage-v2-direct template configuration (Recommended)
+│   │   │   └── google-storage-v2 template configuration
+│   │   ├── Google Storage V2 Cluster Binary Provider
+│   │   │   ├── cluster-google-storage template configuration
+│   │   │   └── What's in the cluster-google-storage template?
+│   │   └── Migrate Your Filestore to Google Storage
+│   ├── Azure Blob Storage
+│   │   ├── Set up Artifactory to Use Azure Blob Storage
+│   │   ├── Azure Blob Storage V2 Binary Provider
+│   │   │   ├── Azure Direct Upload V2 Template (Recommended)
+│   │   │   └── Azure Eventual Upload V2 Template
+│   │   ├── Azure Blob Storage Cluster V2 Binary Provider
+│   │   │   ├── cluster-azure-blob-storage-v2 template configuration
+│   │   │   └── What's in the template?
+│   │   ├── Azure Blob Storage V1 Binary Provider
+│   │   │   ├── Azure Direct Upload V1 Template (Recommended)
+│   │   │   └── Azure Eventual Upload Template
+│   │   ├── Azure Blob Storage Cluster V1 Binary Provider
+│   │   │   ├── cluster-azure-blob-storage template configuration
+│   │   │   └── What's in the cluster-azure-blob-storage template?
+│   │   ├── Manual Filestore Migration for Azure Blob Storage
+│   │   └── Azure Workload Identity
+│   ├── Remote Binary Provider
+│   ├── Eventual Binary Provider
+│   ├── Retry Binary Provider
+│   ├── State-Aware Binary Provider
+│   ├── Eventual-Cluster Binary Provider
+│   ├── State-Aware-S3 Binary Provider
+│   └── Direct Cloud Storage Download
+│       ├── Step 1: Configure the Artifactory Filestore for Direct Cloud Storage
+│       │   └── Step 1a: Use CloudFront CDN (Optional)
+│       ├── Step 2: Specify Repositories for Direct Download
+│       │   ├── Specify Repositories for Direct Download Using the UI
+│       │   ├── Redirect Download Requests to CDN Nodes
+│       │   ├── Specify Repositories for Direct Download Using the REST API
+│       │   └── Specify Repositories for Direct Download Using the YAML Configuration File
+│       ├── Step 3: Finetune Direct Download
+│       ├── Step 4: Control Your Signed URL Downloads
+│       └── Step 5: Configure Firewalls
+├── System Configuration
+│   ├── System YAML Configuration File
+│   │   ├── Implementing Configuration as Code in JFrog
+│   │   ├── Using System YAMLs
+│   │   ├── Artifactory System YAML
+│   │   │   └── Artifactory System YAML Configuration Topics
+│   │   ├── Xray System YAML
+│   │   └── Distribution System YAML
+│   │       └── Supported Configurations in Distribution System YAML
+│   ├── Artifactory YAML Configuration
+│   │   ├── Artifactory YAML File Format
+│   │   ├── Apply Artifactory YAML Configuration Changes
+│   │   ├── Delete an existing element in Artifactory YAML
+│   │   ├── Repositories Configurations in Artifactory YAML
+│   │   ├── Replication (push and pull) Configurations in Artifactory YAML
+│   │   ├── General (General, Property Sets, Proxy, Mail) Configurations in Artifactory YAML
+│   │   ├── Security Configurations in Artifactory YAML
+│   │   ├── Service Configurations in Artifactory YAML
+│   │   └── Advanced Configurations in Artifactory YAML
+│   ├── Artifactory Configuration Files
+│   │   ├── Global Configuration Descriptor
+│   │   ├── Security Configuration Descriptor
+│   │   ├── Content Type/MIME Type
+│   │   └── Artifactory System Properties
+│   │       └── Modify artifactory.system.properties for Helm Installation
+│   ├── Access YAML Configuration
+│   │   ├── Access YAML Configuration Files
+│   │   ├── Upload the Access YAML File
+│   │   │   ├── Upload Access YAML Configuration File for Helm Installation
+│   │   │   └── Upload Access YAML Configuration File for Non-Helm Installation
+│   │   ├── Enable New Integrations
+│   │   ├── Revert to Previous Access Configurations
+│   │   ├── Supported Access Configurations
+│   │   └── Migrated Authentication Provider Properties
+│   ├── Artifactory Bootstrap YAML File
+│   ├── Access Bootstrap YAML File
+│   ├── Distribution Application Config YAML File
+│   └── Worker YAML Configuration
+├── Load Balancer
+├── Communication Between Services
+│   ├── Manage Keys
+│   │   ├── Pairing Tokens
+│   │   │   ├── Master Token
+│   │   │   └── Set up Pairing Tokens
+│   │   └── Create an automatic admin token
+│   ├── Using Access as a Certificate Authority
+│   │   ├── Set TLS on the JFrog Platform
+│   │   │   ├── Step 1: Enable TLS in the JFrog Platform
+│   │   │   ├── Step 2: Set the TLS Certificate
+│   │   │   │   ├── Prerequisites for Custom TLS Certificate
+│   │   │   │   ├── Option 1: Use Access as a Root CA with an Access-generated self-signed certificate
+│   │   │   │   ├── Option 2: Provide your own signed certificate
+│   │   │   │   └── Option 3: Provide a custom CA certificate to Access
+│   │   │   └── Regenerate a new Access CA certificate
+│   │   └── Using TLS Certificates as a Client
+│   │       ├── Download TLS Certificates
+│   │       └── Trust a self-signed certificate or a new CA
+│   │           └── Trust a self-signed certificate in Xray instances/nodes
+│   ├── Custom Token Certificates
+│   │   ├── Load the key pair to the JFrog Platform Deployment (JPD) through bootstrap files
+│   │   └── Create a private-public key pair
+│   └── Configure Proxy Between JFrog Products
+├── Onboarding Wizard
+├── Migrating from Sonatype Nexus Repository Manager to Artifactory
+│   ├── Nexus Migrator Release Notes
+│   │   ├── Nexus Migrator 0.9.12
+│   │   ├── Nexus Migrator 0.9.11
+│   │   ├── Nexus Migrator 0.9.10
+│   │   ├── Nexus Migrator 0.9.9
+│   │   ├── Nexus Migrator 0.9.8
+│   │   ├── Nexus Migrator 0.9.7
+│   │   ├── Nexus Migrator 0.9.5
+│   │   ├── Nexus Migrator 0.9.4
+│   │   ├── Nexus Migrator 0.9.2
+│   │   ├── Nexus Migrator 0.9.1
+│   │   └── Nexus Migrator 0.9.0
+│   ├── Migrator Tool Overview
+│   │   ├── Migration of Privileges
+│   │   └── Repositories and Users in Nexus Repository Manager and Artifactory
+│   ├── Before you begin
+│   ├── Migration Process
+│   ├── Run the migration tool in a single step
+│   ├── Run the migration tool in multiple stages
+│   ├── Edit Migration Configuration [OPTIONAL]
+│   ├── Edit Repository Names [OPTIONAL]
+│   ├── Edit Security Entities [OPTIONAL]
+│   ├── Avoid Repositories from Migration [OPTIONAL]
+│   ├── Avoid Security Entities from Migration [OPTIONAL]
+│   └── Repository Migration Status
+├── Passwordless Access for Amazon EKS
+│   ├── Permissions for Passwordless Access to EKS Cluster
+│   ├── Configure the EKS Cluster with the AWS policy and IAM role
+│   ├── Configure JFrog Platform for Passwordless Access to EKS
+│   └── Install the JFrog Registry Operator in EKS
+└── End of Life
+    ├── Insight
+    │   ├── JFrog Insight Service
+    │   ├── Insight System Requirements and Platform Support
+    │   │   ├── Database and Third-Party Applications in Insight
+    │   │   └── Insight Network Ports
+    │   ├── Installing Insight
+    │   │   ├── Insight Single Node Interactive Script Installation (recommended)
+    │   │   ├── Insight Single Node Linux Archive Installation
+    │   │   ├── Insight Single Node Manual RPM Installation
+    │   │   ├── Insight Single Node Manual Debian Installation
+    │   │   ├── Insight Single Node Helm Chart Installation
+    │   │   ├── Insight Installation For Advanced Users
+    │   │   ├── Insight HA Interactive Script Installation
+    │   │   ├── Insight HA Manual Linux Archive Installation
+    │   │   └── Insight HA Helm Installation
+    │   ├── Upgrading Insight
+    │   │   ├── Upgrading from Insight Version 1.x to 1.x
+    │   │   ├── Upgrading from Insight Version 1.x to 1.17
+    │   │   └── Upgrading from Insight Version 1.x to 1.16
+    │   ├── Advanced Options for Insight
+    │   │   ├── Deploy External PostgreSQL for Insight
+    │   │   └── Deploy Elasticsearch for Insight
+    │   └── Insight System YAML
+    │       └── Supported Configurations in Insight System YAML
+    └── Pipelines
+        ├── JFrog Pipelines Services (Self-hosted)
+        ├── Pipelines System Requirements and Platform Support
+        │   ├── Database and Third-Party Applications in Pipelines
+        │   └── Pipelines Network Ports
+        ├── Installing Pipelines
+        │   ├── Pipelines Single Node Installation with command line installer
+        │   ├── Pipelines Single Node Helm Installation
+        │   ├── Pipelines HA Installation
+        │   ├── TLS in JFrog Pipelines
+        │   │   ├── Enable TLS in JFrog Pipelines
+        │   │   └── Configure TLS Certificates for Pipelines
+        │   └── Changing the Default Docker Images
+        ├── Upgrading Pipelines
+        │   ├── Upgrading to Pipelines Version 1.x
+        │   └── Upgrading Pipelines Chart Version 1.x to 2.x and Above
+        ├── Advanced Options for Pipelines
+        │   ├── Install the Pipelines Chart with Ingress
+        │   ├── Set up a Build Plane
+        │   ├── Use Pipelines with an External PostgreSQL
+        │   ├── Use an External Secret for the Pipelines Password
+        │   ├── Use an External system.yaml with an Existing Secret
+        │   └── Use an External Vault
+        │   └── Use Vault in Production Environments
+        ├── Pipelines System YAML
+        │   └── Supported Configurations in Pipelines System YAML
+        └── Establish TLS and Add Certificates for Pipelines Helm Installation
